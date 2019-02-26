@@ -36,10 +36,10 @@ class AllDishes extends Component {
                     </CardBody>
                     <CardFooter>
                         <RouterNavLink to={'/dishes/' + dishes.id + '/edit'}>
-                            <Button>Edit</Button>
+                            <Button color="success">Edit</Button>
                         </RouterNavLink>
                         <RouterNavLink to={'/dishes/' + dishes.id + '/delete'}>
-                            <Button>Delete</Button>
+                            <Button color="danger">Delete</Button>
                         </RouterNavLink>
                     </CardFooter>
                 </Card>

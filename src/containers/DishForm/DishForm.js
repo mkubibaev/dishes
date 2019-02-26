@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from "reactstrap";
+import './DishForm.css';
 
 class DishForm extends Component {
     state = {
         name: '',
         image: '',
-        price: 0
+        price: 0,
     };
 
     valueChanged = event => {
