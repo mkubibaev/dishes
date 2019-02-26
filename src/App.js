@@ -1,9 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import {NavLink as RouterNavLink} from "react-router-dom";
 import { Route, Switch } from "react-router";
-import Dishes from "./containers/Dishes/Dishes";
+import AllDishes from "./containers/AllDishes/AllDishes";
 import {Collapse, Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from "reactstrap";
 import Orders from "./containers/Orders/Orders";
+import DishForm from "./containers/DishForm/DishForm";
+import AddNewDish from "./containers/AddNewDish/AddNewDish";
 
 class App extends Component {
   render() {
@@ -25,8 +27,9 @@ class App extends Component {
             </Navbar>
             <Container>
         <Switch>
-            <Route path="/" exact component={ Dishes } />
-            <Route path="/orders" component={ Orders } />
+            <Route path="/" exact component={ AllDishes } />
+            <Route path="/orders" exact component={ Orders } />
+            <Route path="/dishForm" exact component={ AddNewDish } />
             <Route render={ () => <h1>Hot found</h1> } />
         </Switch>
             </Container>
