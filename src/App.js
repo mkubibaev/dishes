@@ -4,7 +4,6 @@ import { Route, Switch } from "react-router";
 import AllDishes from "./containers/AllDishes/AllDishes";
 import {Collapse, Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from "reactstrap";
 import Orders from "./containers/Orders/Orders";
-import DishForm from "./containers/DishForm/DishForm";
 import AddNewDish from "./containers/AddNewDish/AddNewDish";
 
 class App extends Component {
