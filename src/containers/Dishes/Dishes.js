@@ -1,49 +1,17 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
 import {Button, Col, Row} from "reactstrap";
 import {NavLink as RouterNavLink} from "react-router-dom";
-import axios from '../../axios-dishes';
 import Dish from "../../components/Dish/Dish";
+import {fetchDishes, removeDish} from "../../store/redux/dishesActions";
 
 class Dishes extends Component {
-    state = {
-        dishes: null
-    };
-
-    getDishes = () => {
-		axios.get('dishes.json').then(response => {
-		    if (response.data) {
-				const dishes = Object.keys(response.data).map(id => {
-					return {...response.data[id], id};
-				});
-
-				this.setState({dishes});
-            }
-
-		});
-    };
 
     componentDidMount () {
-        this.getDishes();
+        this.props.fetchDishes()
     }
 
-	deleteHandler = (id) => {
-        axios.delete(`dishes/${id}.json`).then(this.getDishes)
-    };
-
     render() {
-        let dishes = 'Empty list';
-
-        if(this.state.dishes) {
-            dishes = this.state.dishes.map(dish => (
-                <Col xs="12" md="4" key={dish.id}>
-                    <Dish
-                        {...dish}
-						clicked={() => this.deleteHandler(dish.id)}
-                    />
-                </Col>
-            ));
-        }
-
         return (
             <Fragment>
                 <div className="page-top clearfix">
@@ -56,11 +24,28 @@ class Dishes extends Component {
                 </div>
 
 				<Row>
-					{dishes}
+                    {this.props.dishes.map(dish => (
+						<Col xs="12" md="4" key={dish.id}>
+							<Dish
+								{...dish}
+								clicked={() => this.props.removeDish(dish.id)}
+							/>
+						</Col>
+                    ))}
                 </Row>
             </Fragment>
         );
     }
 }
 
-export default Dishes;
+const mapStateToProps = state => ({
+    dishes: state.dishes.dishes,
+    error: state.dishes.error //todo
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchDishes: () => dispatch(fetchDishes()),
+    removeDish: id => dispatch(removeDish(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dishes);

@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from "reactstrap";
-import axios from "../../axios-dishes";
+import {addDish} from "../../store/redux/dishesActions";
+import {connect} from "react-redux";
 
 class DishForm extends Component {
 	state = {
@@ -17,10 +18,7 @@ class DishForm extends Component {
 
 	submitHandler = event => {
 		event.preventDefault();
-
-		axios.post('dishes.json', this.state).then(() => {
-			this.props.history.replace('/');
-		});
+		this.props.addDish(this.state, this.props.history);
 	};
 
 	render() {
@@ -72,4 +70,13 @@ class DishForm extends Component {
 	}
 }
 
-export default DishForm;
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+	addDish: (dish, history) => dispatch(addDish(dish, history)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DishForm);
