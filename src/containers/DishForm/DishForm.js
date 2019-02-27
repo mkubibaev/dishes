@@ -1,14 +1,24 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Col, Form, FormGroup, Input, Label} from "reactstrap";
-import {addDish} from "../../store/redux/dishesActions";
+import {addDish} from "../../store/actions/dishesActions";
 import {connect} from "react-redux";
 
 class DishForm extends Component {
-	state = {
-		name: '',
-		image: '',
-		price: 0,
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			name: '',
+			image: '',
+			price: '',
+			edit: false
+		};
+
+		if (this.props.match.params.id) {
+			this.state.edit = true;
+		}
+	}
+
 
 	valueChanged = event => {
 		const {name, value} = event.target;
@@ -18,39 +28,44 @@ class DishForm extends Component {
 
 	submitHandler = event => {
 		event.preventDefault();
-		this.props.addDish(this.state, this.props.history);
+
+		if (this.state.name && this.state.image && this.state.price) {
+			this.props.addDish(this.state, this.props.history);
+		} else {
+			alert('All fields required!');
+		}
 	};
 
 	render() {
 		return (
 			<Fragment>
 				<div className="page-top clearfix">
-					<h2 className="float-left">Add new dish</h2>
+					<h2 className="float-left">{this.state.edit ? 'Edit dish' : 'Add new dish'}</h2>
 				</div>
 
-				<Form className="NewDish" onSubmit={this.submitHandler}>
+				<Form onSubmit={this.submitHandler}>
 					<FormGroup row>
-						<Label for="category" sm={2}>Name</Label>
+						<Label sm={2}>Name</Label>
 						<Col sm={10}>
-							<Input type="text" name="name" id="name" placeholder="Name"
+							<Input type="text" name="name" id="name" placeholder="product name"
 								   value={this.state.name}
 								   onChange={this.valueChanged}
 							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>
-						<Label for="category" sm={2}>Image</Label>
+						<Label sm={2}>Image</Label>
 						<Col sm={10}>
-							<Input type="url" name="image" placeholder="Image"
+							<Input type="url" name="image" placeholder="image url"
 								   value={this.state.image}
 								   onChange={this.valueChanged}
 							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>
-						<Label for="category" sm={2}>Price</Label>
+						<Label sm={2}>Price</Label>
 						<Col sm={10}>
-							<Input type="price" name="price"
+							<Input type="number" name="price" placeholder="0"
 								   value={this.state.price}
 								   onChange={this.valueChanged}
 							/>
@@ -70,13 +85,9 @@ class DishForm extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-
-});
-
 const mapDispatchToProps = dispatch => ({
 	addDish: (dish, history) => dispatch(addDish(dish, history)),
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(DishForm);
+export default connect(null,mapDispatchToProps)(DishForm);

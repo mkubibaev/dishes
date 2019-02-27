@@ -11,9 +11,9 @@ class App extends Component {
 			<Layout>
 				<Switch>
 					<Route path="/" exact component={Dishes}/>
+					<Route path="/dishes/add" component={DishForm}/>
+					<Route path="/dishes/edit/:id" component={DishForm}/>
 					<Route path="/orders"  component={Orders}/>
-					<Route path="/add" component={DishForm}/>
-					<Route path="/edit/:id" component={DishForm}/>
 					<Route render={() => <h1>Hot found</h1>}/>
 				</Switch>
 			</Layout>

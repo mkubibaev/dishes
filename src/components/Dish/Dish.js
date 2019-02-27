@@ -11,7 +11,7 @@ const Dish = props => {
 				<CardText><strong>{props.price} KGS</strong></CardText>
 			</CardBody>
 			<CardFooter className="clearfix">
-				<RouterNavLink to={'/dishes/' + props.id + '/edit'} className="float-left">
+				<RouterNavLink to={`/dishes/edit/${props.id}`} className="float-left">
 					<Button color="success">Edit</Button>
 				</RouterNavLink>
 				<Button className="float-right" color="danger" onClick={props.clicked}>Delete</Button>

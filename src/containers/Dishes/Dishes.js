@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Button, Col, Row} from "reactstrap";
 import {NavLink as RouterNavLink} from "react-router-dom";
 import Dish from "../../components/Dish/Dish";
-import {fetchDishes, removeDish} from "../../store/redux/dishesActions";
+import {fetchDishes, removeDish} from "../../store/actions/dishesActions";
 
 class Dishes extends Component {
 
@@ -16,7 +16,7 @@ class Dishes extends Component {
             <Fragment>
                 <div className="page-top clearfix">
 					<h2 className="float-left">Dishes</h2>
-					<RouterNavLink to={'/add'} className="float-right">
+					<RouterNavLink to={'/dishes/add'} className="float-right">
 						<Button color="info">
 							Add new dish
 						</Button>

@@ -7,7 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import App from './App';
 
 import dishesReducer from "./store/reducers/dishesReducer";
-// import orderReducer from "./store/reducers/orderReducer";
+import ordersReducer from "./store/reducers/ordersReducer";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -15,7 +15,7 @@ import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
 	dishes: dishesReducer,
-	// order: orderReducer
+	orders: ordersReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -6,10 +6,6 @@ export const fetchDishesRequest = () => ({type: FETCH_DISHES_REQUEST});
 export const fetchDishesSuccess = dishes => ({type: FETCH_DISHES_SUCCESS, dishes});
 export const fetchDishesFailure = error => ({type: FETCH_DISHES_FAILURE, error});
 
-// export const addDisheRequest = () => ({type: FETCH_DISHES_REQUEST});
-// export const fetchDishesSuccess = dishes => ({type: FETCH_DISHES_SUCCESS, dishes});
-// export const fetchDishesFailure = error => ({type: FETCH_DISHES_FAILURE, error});
-
 export const fetchDishes = () => {
 	return dispatch => {
 		dispatch(fetchDishesRequest());
@@ -30,6 +26,7 @@ export const addDish = (dish, history) => {
 	}
 };
 
+//editDish
 
 export const removeDish = id => {
 	return async dispatch => {
@@ -37,8 +34,3 @@ export const removeDish = id => {
 		dispatch(fetchDishes());
 	}
 };
-
-// export const addProduct = productName => ({type: ADD_PRODUCT, productName});
-// export const removeProduct = productName => ({type: REMOVE_PRODUCT, productName});
-//
-// export const resetCart = () => ({type: RESET_CART});
