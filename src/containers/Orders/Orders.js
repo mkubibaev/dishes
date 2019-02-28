@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {fetchOrders} from "../../store/actions/orderActions";
+import {Button, Card, CardBody, CardText} from "reactstrap";
+
+const DELIVERY_PRICE = 150;
 
 class Orders extends Component {
 
@@ -10,9 +13,40 @@ class Orders extends Component {
 
 	render() {
 		console.log(this.props.orders);
+
+		const orders = Object.keys(this.props.orders).map(orderId => {
+		    let orderPrice = 0;
+		    let order = this.props.orders[orderId];
+
+		    return (
+                <CardBody className="clearfix">
+                    Order Id: {orderId}
+                    {Object.keys(order).map(dishId => {
+                        const dish = this.props.dishes[dishId];
+                        const orderQty = order[dishId];
+                        const orderItemPrice = dish.price * orderQty;
+
+                        orderPrice += orderItemPrice;
+
+                        return (
+                            <CardText>
+                                <strong>{dish.name}</strong>: x {orderQty} = {orderItemPrice}
+                            </CardText>
+                        )
+                    })}
+                    <p>Delivery: <strong>{DELIVERY_PRICE} KGS</strong></p>
+                    <p>Total price: <strong>{orderPrice + DELIVERY_PRICE} KGS</strong></p>
+                    <Button color="danger" className="float-right">Complete order</Button>
+                </CardBody>
+                )
+		});
+
 		return (
-            <div>
-                <h1>This is Orders</h1>
+		    <div>
+                <h2>Orders</h2>
+            <Card>
+               {orders}
+            </Card>
             </div>
         );
     }
@@ -20,7 +54,8 @@ class Orders extends Component {
 
 const mapStateToProps = state => ({
     orders: state.orders.orders,
-    error: state.orders.error
+    error: state.orders.error,
+    dishes: state.dishes,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,9 +1,8 @@
 import {FETCH_ORDERS_REQUEST, FETCH_ORDERS_SUCCESS} from "../actions/actionTypes";
 
 const initialState = {
-	orders: {}
+	orders: {},
 };
-
 
 const ordersReducer = (state = initialState, action) => {
 	switch (action.type) {
