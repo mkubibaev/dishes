@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {fetchOrders} from "../../store/actions/orderActions";
+import {fetchOrders, removeOrder} from "../../store/actions/orderActions";
 import {Button, Card, CardBody, CardText} from "reactstrap";
 
 const DELIVERY_PRICE = 150;
@@ -19,7 +19,9 @@ class Orders extends Component {
 		    let order = this.props.orders[orderId];
 
 		    return (
-                <CardBody className="clearfix">
+                <CardBody className="clearfix"
+                  key={orderId}
+                >
                     Order Id: {orderId}
                     {Object.keys(order).map(dishId => {
                         const dish = this.props.dishes[dishId];
@@ -36,7 +38,11 @@ class Orders extends Component {
                     })}
                     <p>Delivery: <strong>{DELIVERY_PRICE} KGS</strong></p>
                     <p>Total price: <strong>{orderPrice + DELIVERY_PRICE} KGS</strong></p>
-                    <Button color="danger" className="float-right">Complete order</Button>
+                    <Button color="danger" className="float-right"
+                            onClick={this.props.removeOrder}
+                    >
+                        Complete order
+                    </Button>
                 </CardBody>
                 )
 		});
@@ -59,7 +65,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchOrders: () => dispatch(fetchOrders())
+    fetchOrders: () => dispatch(fetchOrders()),
+    removeOrder: id => dispatch(removeOrder(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);
