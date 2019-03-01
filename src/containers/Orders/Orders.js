@@ -8,7 +8,12 @@ import Loader from "../Dishes/Dishes";
 class Orders extends Component {
 
     componentDidMount() {
-        this.props.fetchDishes().then(this.props.fetchOrders)
+        if (this.props.dishes) {
+            this.props.fetchOrders(); 
+        } else {
+            this.props.fetchDishes().then(this.props.fetchOrders)
+        }
+        
 	}
 
 	render() {
