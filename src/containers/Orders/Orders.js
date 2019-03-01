@@ -34,8 +34,12 @@ class Orders extends Component {
                     <CardBody>
                         {Object.keys(order).map(dishId => {
 
+                            if (dishId === 'customer') {
+                                return false;
+                            }
+
                             if(!this.props.dishes[dishId]) {
-                                return <p>Ordered dish is deleted</p>
+                                return <p key={dishId}>Ordered dish is deleted</p>
                             }    
 
                             const dish = this.props.dishes[dishId];
@@ -52,6 +56,14 @@ class Orders extends Component {
                         })}
                         <p>Delivery: <strong>{this.props.delivery} KGS</strong></p>
                         <p>Total price: <strong>{orderPrice + this.props.delivery} KGS</strong></p>
+                        <hr/>
+
+                        <p>
+                            Customer: {order.customer.name},
+                            phone: {order.customer.phone},
+                            address: {order.customer.address}
+                        </p>
+
                         <Button color="info" className="float-right"
                                 onClick={() => this.props.removeOrder(orderId)}
                         >
