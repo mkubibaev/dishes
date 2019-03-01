@@ -29,6 +29,10 @@ class Orders extends Component {
                     <CardBody>
                         {Object.keys(order).map(dishId => {
 
+                            if(!this.props.dishes[dishId]) {
+                                return <p>Ordered dish is deleted</p>
+                            }    
+
                             const dish = this.props.dishes[dishId];
                             const orderQty = order[dishId];
                             const orderItemPrice = dish.price * orderQty;
