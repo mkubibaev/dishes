@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import {Button, Col, Row} from "reactstrap";
+import {Alert, Button, Col, Row} from "reactstrap";
 import {NavLink as RouterNavLink} from "react-router-dom";
 import Dish from "../../components/Dish/Dish";
 import {fetchDishes, removeDish} from "../../store/actions/dishesActions";
+import Loader from "../../components/UI/Loader/Loader";
 
 class Dishes extends Component {
 
@@ -18,6 +19,27 @@ class Dishes extends Component {
     };
 
     render() {
+        if (this.props.error) {
+            return (
+                <Alert color="danger">
+                    {this.props.error}
+                </Alert>
+            )
+        }
+
+        let dishes = (
+            <Row>
+                {this.convertToArr(this.props.dishes).map(dish => (
+                    <Col xs="12" md="4" key={dish.id}>
+                        <Dish
+                            {...dish}
+                            clicked={() => this.props.removeDish(dish.id)}
+                        />
+                    </Col>
+                ))}
+            </Row>
+        );
+
         return (
             <Fragment>
                 <div className="page-top clearfix">
@@ -29,16 +51,8 @@ class Dishes extends Component {
 					</RouterNavLink>
                 </div>
 
-				<Row>
-                    {this.convertToArr(this.props.dishes).map(dish => (
-						<Col xs="12" md="4" key={dish.id}>
-							<Dish
-								{...dish}
-								clicked={() => this.props.removeDish(dish.id)}
-							/>
-						</Col>
-                    ))}
-                </Row>
+                {this.props.loading ? <Loader/> : dishes}
+
             </Fragment>
         );
     }
@@ -46,7 +60,8 @@ class Dishes extends Component {
 
 const mapStateToProps = state => ({
     dishes: state.dishes.dishes,
-    error: state.dishes.error //todo
+    error: state.dishes.error,
+    loading: state.dishes.loading,
 });
 
 const mapDispatchToProps = dispatch => ({

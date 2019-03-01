@@ -4,7 +4,7 @@ import {NavLink as RouterNavLink} from "react-router-dom";
 
 const Dish = props => {
 	return (
-		<Card>
+		<Card style={{marginBottom: '20px'}}>
 			<CardImg top width="100%" src={props.image} alt="Card image cap"/>
 			<CardBody>
 				<CardTitle>{props.name}</CardTitle>

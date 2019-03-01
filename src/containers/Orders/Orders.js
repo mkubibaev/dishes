@@ -1,19 +1,25 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {fetchOrders, removeOrder} from "../../store/actions/orderActions";
-import {Button, Card, CardBody} from "reactstrap";
+import {Alert, Button, Card, CardBody} from "reactstrap";
 import {fetchDishes} from "../../store/actions/dishesActions";
-
-const DELIVERY_PRICE = 150;
+import Loader from "../Dishes/Dishes";
 
 class Orders extends Component {
 
     componentDidMount() {
         this.props.fetchDishes().then(this.props.fetchOrders)
-
 	}
 
 	render() {
+        if (this.props.error) {
+            return (
+                <Alert color="danger">
+                    {this.props.error}
+                </Alert>
+            )
+        }
+
 		const orders = Object.keys(this.props.orders).map(orderId => {
 		    let orderPrice = 0;
 		    let order = this.props.orders[orderId];
@@ -35,8 +41,8 @@ class Orders extends Component {
                                 </p>
                             )
                         })}
-                        <p>Delivery: <strong>{DELIVERY_PRICE} KGS</strong></p>
-                        <p>Total price: <strong>{orderPrice + DELIVERY_PRICE} KGS</strong></p>
+                        <p>Delivery: <strong>{this.props.delivery} KGS</strong></p>
+                        <p>Total price: <strong>{orderPrice + this.props.delivery} KGS</strong></p>
                         <Button color="info" className="float-right"
                                 onClick={() => this.props.removeOrder(orderId)}
                         >
@@ -44,7 +50,7 @@ class Orders extends Component {
                         </Button>
                     </CardBody>
                 </Card>
-                )
+            )
 		});
 
 		return (
@@ -52,8 +58,7 @@ class Orders extends Component {
                 <div className="page-top clearfix">
                     <h2>Orders</h2>
                 </div>
-
-                {orders}
+                {this.props.loading ? <Loader/> : orders}
             </Fragment>
         );
     }
@@ -61,8 +66,10 @@ class Orders extends Component {
 
 const mapStateToProps = state => ({
     orders: state.orders.orders,
-    dishes: state.dishes.dishes,
     error: state.orders.error,
+    loading: state.orders.loading,
+    delivery: state.orders.delivery,
+    dishes: state.dishes.dishes,
 });
 
 const mapDispatchToProps = dispatch => ({
