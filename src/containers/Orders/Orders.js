@@ -1,71 +1,73 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {fetchOrders, removeOrder} from "../../store/actions/orderActions";
-import {Button, Card, CardBody, CardText} from "reactstrap";
+import {Button, Card, CardBody} from "reactstrap";
+import {fetchDishes} from "../../store/actions/dishesActions";
 
 const DELIVERY_PRICE = 150;
 
 class Orders extends Component {
 
     componentDidMount() {
-        this.props.fetchOrders()
+        this.props.fetchDishes().then(this.props.fetchOrders)
+
 	}
 
 	render() {
-		console.log(this.props.orders);
-
 		const orders = Object.keys(this.props.orders).map(orderId => {
 		    let orderPrice = 0;
 		    let order = this.props.orders[orderId];
 
-		    return (
-                <CardBody className="clearfix"
-                  key={orderId}
-                >
-                    Order Id: {orderId}
-                    {Object.keys(order).map(dishId => {
-                        const dish = this.props.dishes[dishId];
-                        const orderQty = order[dishId];
-                        const orderItemPrice = dish.price * orderQty;
+            return (
+                <Card key={orderId} style={{marginBottom: '20px'}}>
+                    <CardBody>
+                        {Object.keys(order).map(dishId => {
 
-                        orderPrice += orderItemPrice;
+                            const dish = this.props.dishes[dishId];
+                            const orderQty = order[dishId];
+                            const orderItemPrice = dish.price * orderQty;
 
-                        return (
-                            <CardText>
-                                <strong>{dish.name}</strong>: x {orderQty} = {orderItemPrice}
-                            </CardText>
-                        )
-                    })}
-                    <p>Delivery: <strong>{DELIVERY_PRICE} KGS</strong></p>
-                    <p>Total price: <strong>{orderPrice + DELIVERY_PRICE} KGS</strong></p>
-                    <Button color="danger" className="float-right"
-                            onClick={this.props.removeOrder}
-                    >
-                        Complete order
-                    </Button>
-                </CardBody>
+                            orderPrice += orderItemPrice;
+
+                            return (
+                                <p key={dishId}>
+                                    {dish.name}: x {orderQty} = <strong>{orderItemPrice} KGS</strong>
+                                </p>
+                            )
+                        })}
+                        <p>Delivery: <strong>{DELIVERY_PRICE} KGS</strong></p>
+                        <p>Total price: <strong>{orderPrice + DELIVERY_PRICE} KGS</strong></p>
+                        <Button color="info" className="float-right"
+                                onClick={() => this.props.removeOrder(orderId)}
+                        >
+                            Complete order
+                        </Button>
+                    </CardBody>
+                </Card>
                 )
 		});
 
 		return (
-		    <div>
-                <h2>Orders</h2>
-            <Card>
-               {orders}
-            </Card>
-            </div>
+		    <Fragment>
+                <div className="page-top clearfix">
+                    <h2>Orders</h2>
+                </div>
+
+                {orders}
+            </Fragment>
         );
     }
 }
 
 const mapStateToProps = state => ({
     orders: state.orders.orders,
+    dishes: state.dishes.dishes,
     error: state.orders.error,
-    dishes: state.dishes,
 });
 
 const mapDispatchToProps = dispatch => ({
     fetchOrders: () => dispatch(fetchOrders()),
+    fetchDishes: () => dispatch(fetchDishes()),
     removeOrder: id => dispatch(removeOrder(id)),
 });
 

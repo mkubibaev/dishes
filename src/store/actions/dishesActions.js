@@ -9,7 +9,7 @@ export const fetchDishesFailure = error => ({type: FETCH_DISHES_FAILURE, error})
 export const fetchDishes = () => {
 	return dispatch => {
 		dispatch(fetchDishesRequest());
-		axios.get('dishes.json').then(response => {
+		return axios.get('dishes.json').then(response => {
 			dispatch(fetchDishesSuccess(response.data));
 		}, error => {
 			dispatch(fetchDishesFailure(error));

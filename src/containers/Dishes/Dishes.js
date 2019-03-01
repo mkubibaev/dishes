@@ -11,6 +11,12 @@ class Dishes extends Component {
         this.props.fetchDishes()
     }
 
+    convertToArr = obj => {
+        return Object.keys(obj).map(id => {
+            return {...obj[id], id};
+        });
+    };
+
     render() {
         return (
             <Fragment>
@@ -24,7 +30,7 @@ class Dishes extends Component {
                 </div>
 
 				<Row>
-                    {this.props.dishes.map(dish => (
+                    {this.convertToArr(this.props.dishes).map(dish => (
 						<Col xs="12" md="4" key={dish.id}>
 							<Dish
 								{...dish}

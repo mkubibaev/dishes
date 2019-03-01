@@ -1,14 +1,8 @@
 import {FETCH_DISHES_FAILURE, FETCH_DISHES_REQUEST, FETCH_DISHES_SUCCESS} from "../actions/actionTypes";
 
 const initialState = {
-	dishes: [],
+	dishes: {},
 	error: null
-};
-
-const convertToArr = obj => {
-	return Object.keys(obj).map(id => {
-		return {...obj[id], id};
-	});
 };
 
 const dishesReducer = (state = initialState, action) => {
@@ -17,14 +11,9 @@ const dishesReducer = (state = initialState, action) => {
 			return state;
 
 		case FETCH_DISHES_SUCCESS:
-			let dishes = [];
-
-			if (action.dishes) {
-				dishes = convertToArr(action.dishes);
-			}
 			return {
 				...state,
-				dishes
+				dishes: action.dishes
 			};
 
 		case FETCH_DISHES_FAILURE:
@@ -32,7 +21,6 @@ const dishesReducer = (state = initialState, action) => {
 				...state,
 				error: action.error
 			};
-
 
 		default:
 			return state
